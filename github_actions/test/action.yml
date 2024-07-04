@@ -61,7 +61,7 @@ runs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           chmod +x ./pragma
         fi
-        ./pragma.com -cli -non_interactive -luaext -log 2 2 +map "test_physics" +"lua_exec tests/ci_runner_tests.lua"
+        ./pragma.com -cli -non_interactive -luaext -log 2 2 +map "empty" +"lua_exec test_script.lua"
 
     #- name: Upload Crashdumps
     #  uses: actions/upload-artifact@v4
