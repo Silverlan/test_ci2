@@ -13,6 +13,11 @@ inputs:
     description: 'The version of Pragma to download (if it not already exists).'
     required: true
     default: 'nightly'
+outputs:
+  exit-code:
+    description: 'The result of the Lua code execution'
+  error-code:
+    description: 'The result of the Lua code execution'
 runs:
   using: "composite"
   steps:
@@ -65,12 +70,8 @@ runs:
       shell: bash
       run: |
         mkdir -p pragma/lua
-        echo "${{ inputs.lua-code }}" > pragma/lua/test_script.lua
-        cat pragma/lua/test_script.lua
-        
-    #- uses: mxschmitt/action-tmate@v3.18
-    #  name: CI
-
+        echo "${{ inputs.lua-code }}" > pragma/lua/ci_script.lua
+        cat pragma/lua/ci_script.lua
 
     - name: Run Test Scripts
       shell: bash
@@ -93,21 +94,31 @@ runs:
         elif [ "${{ inputs.state }}" == "server" ]; then
           executableName="pragma_server"
         fi
-        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"${luaCmdName} test_script.lua" +"exit"
+        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"${luaCmdName} ci_script.lua" +"exit"
 
-    #- name: Upload Crashdumps
-    #  uses: actions/upload-artifact@v4
-    #  if: always()
-    #  with:
-    #    name: crashdumps
-    #    path: "pragma/crashdumps"
+        EXIT_CODE=$?
+        echo "::set-output name=exit-code::$EXIT_CODE"
+        if [ $EXIT_CODE -eq 0 ]; then
+          echo "::set-output name=error-code::0"
+        else
+          echo "::set-output name=error-code::1"
+          exit 1
+        fi
 
-    #- name: Run Test Scripts
-    #  shell: bash
-    #  run: |
-    #    cd "pragma"
-    #    if [ "$RUNNER_OS" == "Linux" ]; then
-    #      chmod +x ./pragma
-    #    fi
-    #    ./pragma -cli -luaext -log 2 2 +map "test_physics" +"lua_exec tests/ci_runner_tests.lua"
-      #./pragma -cli -luaext -log 2 2 +map "empty" +"lua_run print('test')" +"lua_exec test_script.lua" +"lua_run print('test2')" +"lua_run exit"
+    - name: Delete Lua Code File
+      shell: bash
+      run: |
+        rm pragma/lua/ci_script.lua
+
+    - name: Check Result
+      shell: bash
+      run: |
+        CI_CONTENTS=$(cat "pragma/ci.txt")
+        if [ $exit_code -ne 0 ]; then
+          echo "::set-output name=error-code::3"
+          exit 3
+        fi
+        if [ "$CI_CONTENTS" == "0" ]; then
+          echo "::set-output name=error-code::2"
+          exit 2
+        fi

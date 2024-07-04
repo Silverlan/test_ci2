@@ -15,8 +15,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Pragma Custom Action
+        id: pragma
         uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
         with:
           lua-code: |
             local test = \"Hello\"
             print(\"Test Message: \", test)
+
+      - name: Output Result
+        shell: bash
+        run: |
+          echo "Exit-code: ${{ steps.pragma.exit-code }}"
+          echo "Error-code: ${{ steps.pragma.error-code }}"
