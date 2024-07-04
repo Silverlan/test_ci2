@@ -9,31 +9,46 @@ inputs:
     description: 'Set to "client" for client-side execution, otherwise "server".'
     required: true
     default: 'client'
+  version:
+    description: 'The version of Pragma to download (if it not already exists).'
+    required: true
+    default: 'nightly'
 runs:
   using: "composite"
   steps:
-    - name: Download Pragma (Windows)
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: |
-        if (Test-Path -Path "pragma") {
-          echo "Pragma already exists. Skipping download."
-        } else {
-          $repo = "Silverlan/pragma"
-          Invoke-WebRequest -Uri "https://github.com/$repo/releases/download/nightly/pragma-win64.zip" -OutFile "pragma-win64.zip"
-          Expand-Archive -Path "pragma-win64.zip" -DestinationPath "pragma"
-        }
-
-    - name: Download Pragma (Linux)
-      if: runner.os == 'Linux'
+    - name: Download Pragma
       shell: bash
       run: |
         if [ -d "pragma" ]; then
           echo "Pragma already exists. Skipping download."
         else
-          wget https://github.com/Silverlan/pragma/releases/download/nightly/pragma-lin64.tar.gz
+          repo="Silverlan/pragma"
+
+          version="${{ inputs.version }}"
+
+          dlUrl="https://github.com/Silverlan/pragma/releases/download/${version}/"
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            if [ "$version" == "nightly" ]; then
+              fileName="pragma-lin64.tar.gz"
+            else
+              fileName="pragma-${version}-lin64.tar.gz"
+            fi
+          else
+            if [ "$version" == "nightly" ]; then
+              fileName="pragma-win64.zip"
+            else
+              fileName="pragma-${version}-win64.zip"
+            fi
+          fi
+          dlUrl="${dlUrl}${fileName}"
+
+          curl -L "${dlUrl}" -o "${fileName}"
           mkdir pragma
-          tar -xzvf pragma-lin64.tar.gz -C pragma
+          if [[ $fileName == *.tar.gz ]]; then
+            tar -xzf ${fileName} -C pragma
+          else
+            unzip ${fileName} -d pragma
+          fi
         fi
 
     - name: Copy Override Files (Windows)
