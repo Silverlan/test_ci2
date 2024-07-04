@@ -19,7 +19,14 @@ jobs:
         uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
         with:
           lua-script: tests/create_entity.lua
-          artifacts-name: "model-import"
+          artifacts-name: "create-entity"
+
+      - name: Launch PFM
+        id: launch-pfm
+        uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
+        with:
+          lua-script: tests/pfm/launch_pfm.lua
+          artifacts-name: "launch-pfm"
 
       - name: Output Result
         shell: bash
