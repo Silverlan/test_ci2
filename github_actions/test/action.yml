@@ -22,7 +22,7 @@ outputs:
     value: ${{ steps.handle-result.outputs.error-code }}
   test:
     description: 'Test'
-    value: ${{ steps.handle-result.outputs.test }}
+    value: "Asdf"
 runs:
   using: "composite"
   steps:
