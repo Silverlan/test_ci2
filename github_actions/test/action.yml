@@ -79,14 +79,14 @@ runs:
 
         cat << 'EOF' > ${scriptFileName}
         local cb = game.add_callback("OnLuaError",function(err)
-          file.write(\"ci.txt\", \"-1\")
+          file.write(\"ci.txt\", \"3\")
           file.write(\"ci_lua_error.txt\", err)
         end)
         EOF
 
-        echo "file.write(\"ci.txt\", \"0\")" > ${scriptFileName}
+        echo "file.write(\"ci.txt\", \"2\")" > ${scriptFileName}
         echo "${{ inputs.lua-code }}" >> ${scriptFileName}
-        echo "file.write(\"ci.txt\", \"1\")" >> ${scriptFileName}
+        echo "file.write(\"ci.txt\", \"0\")" >> ${scriptFileName}
         cat ${scriptFileName}
 
     - name: Run Test Scripts
@@ -151,7 +151,7 @@ runs:
           echo "error-code=3" >> $GITHUB_OUTPUT
           exit 1
         fi
-        if [ "$CI_CONTENTS" == "0" ]; then
-          echo "error-code=2" >> $GITHUB_OUTPUT
+        if [ "$CI_CONTENTS" -ne 0 ]; then
+          echo "error-code=$CI_CONTENTS" >> $GITHUB_OUTPUT
           exit 2
         fi
