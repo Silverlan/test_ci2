@@ -70,8 +70,11 @@ runs:
       shell: bash
       run: |
         mkdir -p pragma/lua
-        echo "${{ inputs.lua-code }}" > pragma/lua/ci_script.lua
-        cat pragma/lua/ci_script.lua
+        scriptFileName="pragma/lua/ci_script.lua"
+        echo "file.write(\"ci.txt\", \"0\")\n" > ${scriptFileName}
+        echo "${{ inputs.lua-code }}" >> ${scriptFileName}
+        echo "file.write(\"ci.txt\", \"1\")" >> ${scriptFileName}
+        cat ${scriptFileName}
 
     - name: Run Test Scripts
       shell: bash
