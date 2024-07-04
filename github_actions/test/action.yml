@@ -149,7 +149,7 @@ runs:
           echo "error-code=ci_file" >> $GITHUB_OUTPUT
           exit 1
         fi
-        if [ "$CI_CONTENTS" -ne "success" ]; then
+        if [ "$CI_CONTENTS" != "success" ]; then
           echo "error-code=$CI_CONTENTS" >> $GITHUB_OUTPUT
           exit 2
         fi
