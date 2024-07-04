@@ -6,7 +6,7 @@ inputs:
     required: true
     default: ''
   state:
-    description: 'Set to \'client\' for client-side execution, otherwise \'server\'.'
+    description: 'Set to "client" for client-side execution, otherwise "server".'
     required: true
     default: 'client'
 runs:
