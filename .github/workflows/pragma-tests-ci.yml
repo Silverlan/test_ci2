@@ -30,3 +30,4 @@ jobs:
         run: |
           echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
           echo "Error-code: ${{ steps.pragma.outputs.error-code }}"
+          echo "Lua-error: ${{ steps.pragma.outputs.lua-error }}"
