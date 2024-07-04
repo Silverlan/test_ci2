@@ -71,7 +71,7 @@ runs:
       run: |
         mkdir -p pragma/lua
         scriptFileName="pragma/lua/ci_script.lua"
-        echo "file.write(\"ci.txt\", \"0\")\n" > ${scriptFileName}
+        echo "file.write(\"ci.txt\", \"0\")" > ${scriptFileName}
         echo "${{ inputs.lua-code }}" >> ${scriptFileName}
         echo "file.write(\"ci.txt\", \"1\")" >> ${scriptFileName}
         cat ${scriptFileName}
