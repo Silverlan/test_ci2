@@ -22,6 +22,7 @@ jobs:
           lua-code: |
             local test = \"Hello\"
             print(\"Test Message: \", test)
+            asdf()
 
       - name: Output Result
         shell: bash
