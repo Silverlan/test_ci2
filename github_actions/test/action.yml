@@ -101,12 +101,13 @@ runs:
 
         echo "file.write(\"ci.txt\", \"unknown\")" >> ${scriptFileName}
         if [ "${{ inputs.lua-script }}" != "" ]; then
-          cat <<EOF2 >> ${scriptFileName}
-          local res, msg = include("${{ inputs.lua-script }}")
-          if(res == false) then
-            error("Execution of script '${scriptFileName}' failed: " .. tostring(msg))
-          end
-          EOF2
+          cat <<EOF >> ${scriptFileName}
+        local res, msg = include("${{ inputs.lua-script }}")
+        if(res == false) then
+          error("Execution of script '${scriptFileName}' failed: " .. tostring(msg))
+        end
+        EOF
+        
         fi
         echo "${{ inputs.lua-code }}" >> ${scriptFileName}
         echo "file.write(\"ci.txt\", \"success\")" >> ${scriptFileName}
