@@ -64,6 +64,7 @@ runs:
     - name: Download asset files
       shell: bash
       run: |
+        cd pragma
         curl -L "https://pragma-engine.com/share/addons.zip" -o "addons.zip"
         unzip "addons.zip" -d .
 
