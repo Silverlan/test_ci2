@@ -23,7 +23,8 @@ jobs:
             local test = \"Hello\"
             print(\"Test Message: \", test)
             print(engine.load_library(\"mount_external/pr_mount_external\"))
-            game.load_model(\"headcrabclassic\")
+            print(\"Import: \",asset.import(\"headcrabclassic\", asset.TYPE_MODEL))
+            --game.load_model(\"headcrabclassic\")
 
       - name: Output Result
         shell: bash
