@@ -20,9 +20,6 @@ outputs:
   error-code:
     description: 'The result of the Lua code execution'
     value: ${{ steps.handle-result.outputs.error-code }}
-  test:
-    description: 'Test'
-    value: "Asdf"
 runs:
   using: "composite"
   steps:
@@ -117,7 +114,7 @@ runs:
       id: handle-result
       shell: bash
       run: |
-        echo "test=Hello" >> $GITHUB_OUTPUT
+        echo "error-code=0" >> $GITHUB_OUTPUT
         
         exit_code=${{ steps.run-script.outputs.exit-code }}
         echo "exit-code=$exit_code" >> $GITHUB_OUTPUT

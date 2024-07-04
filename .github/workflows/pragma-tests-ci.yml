@@ -28,4 +28,3 @@ jobs:
         run: |
           echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
           echo "Error-code: ${{ steps.pragma.outputs.error-code }}"
-          echo "Test: ${{ steps.pragma.outputs.test }}"
