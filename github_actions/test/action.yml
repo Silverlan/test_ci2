@@ -5,6 +5,10 @@ inputs:
     description: 'Lua Code'
     required: true
     default: ''
+  state:
+    description: 'Set to \'client\' for client-side execution, otherwise \'server\'.'
+    required: true
+    default: 'client'
 runs:
   using: "composite"
   steps:
@@ -60,7 +64,21 @@ runs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           chmod +x ./pragma
         fi
-        ./pragma.com -cli -non_interactive -luaext -log 1 1 +map "empty" +"lua_exec test_script.lua" +"exit"
+        executableName="pragma"
+        luaCmdName="lua_exec"
+        if [ "${{ inputs.state }}" == "client" ]; then
+          luaCmdName="lua_exec_cl"
+        fi
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          if [ "${{ inputs.state }}" == "server" ]; then
+            executableName="pragma_server"
+          else
+            executableName="pragma.com"
+          fi
+        elif [ "${{ inputs.state }}" == "server" ]; then
+          executableName="pragma_server"
+        fi
+        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"${luaCmdName} test_script.lua" +"exit"
 
     #- name: Upload Crashdumps
     #  uses: actions/upload-artifact@v4
