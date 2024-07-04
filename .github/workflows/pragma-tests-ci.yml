@@ -26,6 +26,6 @@ jobs:
       - name: Output Result
         shell: bash
         run: |
-          echo "Exit-code: ${{ steps.pragma.exit-code }}"
-          echo "Error-code: ${{ steps.pragma.error-code }}"
-          echo "Test: ${{ steps.pragma.test }}"
+          echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
+          echo "Error-code: ${{ steps.pragma.outputs.error-code }}"
+          echo "Test: ${{ steps.pragma.outputs.test }}"
