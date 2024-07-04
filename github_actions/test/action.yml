@@ -142,8 +142,7 @@ runs:
           cat "pragma/ci_lua_error.txt"
           echo "X"
           CI_LUA_ERROR=$(cat "pragma/ci_lua_error.txt")
-          exit_code=$?
-          if [ $exit_code -ne 0 ]; then
+          if [ -n "$CI_LUA_ERROR" ]; then
             echo "A3"
             echo "$CI_LUA_ERROR"
             echo "lua-error=$CI_LUA_ERROR" >> $GITHUB_OUTPUT
