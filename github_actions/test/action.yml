@@ -79,7 +79,6 @@ runs:
 
         cat << 'EOF' > ${scriptFileName}
         local cb = game.add_callback("OnLuaError",function(err)
-          print("A LUA ERROR HAS OCCURRED: ",err)
           file.write("ci.txt", "3")
           file.write("ci_lua_error.txt", err)
         end)
@@ -141,7 +140,7 @@ runs:
           CI_LUA_ERROR=$(cat "pragma/ci_lua_error.txt")
           exit_code=$?
           if [ $exit_code -ne 0 ]; then
-            echo "lua-error=$(echo ${CI_LUA_ERROR})" >> $GITHUB_OUTPUT
+            echo "lua-error=$CI_LUA_ERROR" >> $GITHUB_OUTPUT
           fi
         fi
 
