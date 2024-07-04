@@ -22,7 +22,7 @@ jobs:
           lua-code: |
             local test = \"Hello\"
             print(\"Test Message: \", test)
-            game.load_model("headcrabclassic")
+            game.load_model(\"headcrabclassic\")
 
       - name: Output Result
         shell: bash
