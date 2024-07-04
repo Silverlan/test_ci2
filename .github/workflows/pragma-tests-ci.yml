@@ -26,6 +26,7 @@ jobs:
 
       - name: Output Result
         shell: bash
+        if: always()
         run: |
           echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
           echo "Error-code: ${{ steps.pragma.outputs.error-code }}"
