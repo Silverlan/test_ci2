@@ -79,8 +79,9 @@ runs:
 
         cat << 'EOF' > ${scriptFileName}
         local cb = game.add_callback("OnLuaError",function(err)
-          file.write(\"ci.txt\", \"3\")
-          file.write(\"ci_lua_error.txt\", err)
+          print("A LUA ERROR HAS OCCURRED: ",err)
+          file.write("ci.txt", "3")
+          file.write("ci_lua_error.txt", err)
         end)
         EOF
 
