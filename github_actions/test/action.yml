@@ -176,8 +176,12 @@ runs:
       shell: bash
       run: |
         mkdir -p artifacts
-        cp pragma/log.txt artifacts/log.txt
-        cp -r pragma/crashdumps artifacts/crashdumps
+        if [ -f "pragma/log.txt" ]; then
+          cp pragma/log.txt artifacts/log.txt
+        fi
+        if [ -d "pragma/crashdumps" ]; then
+          cp -r pragma/crashdumps artifacts/crashdumps
+        fi
 
     - name: Upload artifact files
       uses: actions/upload-artifact@v4
