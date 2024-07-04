@@ -15,13 +15,13 @@ inputs:
     default: 'nightly'
 outputs:
   exit-code:
-    description: 'The result of the Lua code execution'
+    description: 'The exit code raised by Pragma.'
     value: ${{ steps.handle-result.outputs.exit-code }}
-  error-code:
-    description: 'The result of the Lua code execution'
-    value: ${{ steps.handle-result.outputs.error-code }}
+  error:
+    description: 'Describes the type of error that has occurred, or "success" if no error occurred.'
+    value: ${{ steps.handle-result.outputs.error }}
   lua-error:
-    description: 'The result of the Lua code execution'
+    description: 'The Lua error that was caused by running the Lua-code, if there was one.'
     value: ${{ steps.handle-result.outputs.lua-error }}
 runs:
   using: "composite"
@@ -60,6 +60,12 @@ runs:
             unzip ${fileName} -d pragma
           fi
         fi
+
+    - name: Download asset files
+      shell: bash
+      run: |
+        curl -L "https://pragma-engine.com/share/addons.zip" -o "addons.zip"
+        unzip "addons.zip" -d .
 
     - name: Copy Override Files (Windows)
       if: runner.os == 'Windows'
@@ -125,13 +131,13 @@ runs:
       id: handle-result
       shell: bash
       run: |
-        echo "error-code=success" >> $GITHUB_OUTPUT
+        echo "error=success" >> $GITHUB_OUTPUT
         
         exit_code=${{ steps.run-script.outputs.exit-code }}
         echo "exit-code=$exit_code" >> $GITHUB_OUTPUT
 
         if [ $exit_code -ne 0 ]; then
-          echo "error-code=exit" >> $GITHUB_OUTPUT
+          echo "error=exit" >> $GITHUB_OUTPUT
           exit $exit_code
         fi
 
@@ -146,10 +152,10 @@ runs:
         exit_code=$?
 
         if [ $exit_code -ne 0 ]; then
-          echo "error-code=ci_file" >> $GITHUB_OUTPUT
+          echo "error=ci_file" >> $GITHUB_OUTPUT
           exit 1
         fi
         if [ "$CI_CONTENTS" != "success" ]; then
-          echo "error-code=$CI_CONTENTS" >> $GITHUB_OUTPUT
+          echo "error=$CI_CONTENTS" >> $GITHUB_OUTPUT
           exit 2
         fi

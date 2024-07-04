@@ -22,12 +22,12 @@ jobs:
           lua-code: |
             local test = \"Hello\"
             print(\"Test Message: \", test)
-            asdf()
+            game.load_model("headcrabclassic")
 
       - name: Output Result
         shell: bash
         if: always()
         run: |
           echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
-          echo "Error-code: ${{ steps.pragma.outputs.error-code }}"
+          echo "Error: ${{ steps.pragma.outputs.error }}"
           echo "Lua-error: ${{ steps.pragma.outputs.lua-error }}"
