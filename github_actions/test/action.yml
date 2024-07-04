@@ -160,3 +160,17 @@ runs:
           echo "error=$CI_CONTENTS" >> $GITHUB_OUTPUT
           exit 2
         fi
+
+    - name: Upload Log
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: log
+        path: "pragma/log.txt"
+
+    - name: Upload Crashdumps
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: crashdumps
+        path: "pragma/crashdumps"
