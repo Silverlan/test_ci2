@@ -16,8 +16,10 @@ inputs:
 outputs:
   exit-code:
     description: 'The result of the Lua code execution'
+    value: ${{ steps.handle-result.outputs.exit-code }}
   error-code:
     description: 'The result of the Lua code execution'
+    value: ${{ steps.handle-result.outputs.error-code }}
 runs:
   using: "composite"
   steps:
@@ -78,6 +80,7 @@ runs:
 
     - name: Run Test Scripts
       shell: bash
+      id: run-script
       run: |
         cd "pragma"
         if [ "$RUNNER_OS" == "Linux" ]; then
@@ -101,12 +104,6 @@ runs:
 
         EXIT_CODE=$?
         echo "exit-code=$(echo $EXIT_CODE)" >> $GITHUB_OUTPUT
-        if [ $EXIT_CODE -eq 0 ]; then
-          echo "error-code=0" >> $GITHUB_OUTPUT
-        else
-          echo "error-code=1" >> $GITHUB_OUTPUT
-          exit 1
-        fi
 
     - name: Delete Lua Code File
       shell: bash
@@ -114,13 +111,23 @@ runs:
         rm pragma/lua/ci_script.lua
 
     - name: Check Result
+      id: handle-result
       shell: bash
       run: |
+        exit_code=${{ steps.run-script.outputs.exit-code }}
+        echo "exit-code=$exit_code" >> $GITHUB_OUTPUT
+
+        if [ $exit_code -ne 0 ]; then
+          error_code=1
+          echo "error-code=$error_code" >> $GITHUB_OUTPUT
+          exit $exit_code
+        fi
+
         CI_CONTENTS=$(cat "pragma/ci.txt")
         exit_code=$?
         if [ $exit_code -ne 0 ]; then
           echo "error-code=3" >> $GITHUB_OUTPUT
-          exit 3
+          exit 1
         fi
         if [ "$CI_CONTENTS" == "0" ]; then
           echo "error-code=2" >> $GITHUB_OUTPUT
