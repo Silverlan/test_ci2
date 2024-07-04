@@ -18,6 +18,7 @@ jobs:
         id: pragma
         uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
         with:
+          state: "server"
           lua-code: |
             local test = \"Hello\"
             print(\"Test Message: \", test)
