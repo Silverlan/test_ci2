@@ -93,21 +93,25 @@ runs:
         scriptFileName="pragma/lua/ci_script.lua"
 
         cat <<EOF > ${scriptFileName}
-        local cb = game.add_callback("OnLuaError",function(err)
+        local cbOnError = game.add_event_listener("OnLuaError",function(err)
           file.write("ci.txt", "lua")
           file.write("ci_lua_error.txt", err)
+        end)
+        EOF
+
+        cat <<EOF >> ${scriptFileName}
+        include("tests/base.lua")
+        local cbOnTestComplete = test.add_event_listener("OnTestComplete", function(success, errMsg)
+          engine.shutdown()
         end)
         EOF
 
         echo "file.write(\"ci.txt\", \"unknown\")" >> ${scriptFileName}
         if [ "${{ inputs.lua-script }}" != "" ]; then
           cat <<EOF >> ${scriptFileName}
-        local res, msg = include("${{ inputs.lua-script }}")
-        if(res == false) then
-          error("Execution of script '${scriptFileName}' failed: " .. tostring(msg))
-        end
+        test.run("${{ inputs.lua-script }}")
         EOF
-        
+
         fi
         echo "${{ inputs.lua-code }}" >> ${scriptFileName}
         echo "file.write(\"ci.txt\", \"success\")" >> ${scriptFileName}
@@ -135,7 +139,7 @@ runs:
         elif [ "${{ inputs.state }}" == "server" ]; then
           executableName="pragma_server"
         fi
-        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"${luaCmdName} ci_script.lua" +"exit"
+        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"${luaCmdName} ci_script.lua"
 
         EXIT_CODE=$?
         echo "exit-code=$(echo $EXIT_CODE)" >> $GITHUB_OUTPUT

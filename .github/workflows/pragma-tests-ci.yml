@@ -18,7 +18,7 @@ jobs:
         id: pragma
         uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
         with:
-          lua-script: test_ci.lua
+          lua-script: tests/create_entity.lua
           artifacts-name: "model-import"
 
       - name: Output Result
