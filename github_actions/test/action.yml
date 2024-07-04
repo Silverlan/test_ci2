@@ -92,7 +92,7 @@ runs:
         mkdir -p pragma/lua
         scriptFileName="pragma/lua/ci_script.lua"
 
-        cat << 'EOF' > ${scriptFileName}
+        cat <<EOF > ${scriptFileName}
         local cb = game.add_callback("OnLuaError",function(err)
           file.write("ci.txt", "lua")
           file.write("ci_lua_error.txt", err)
@@ -101,7 +101,7 @@ runs:
 
         echo "file.write(\"ci.txt\", \"unknown\")" >> ${scriptFileName}
         if [ "${{ inputs.lua-script }}" != "" ]; then
-          cat << 'EOF' >> ${scriptFileName}
+          cat <<EOF >> ${scriptFileName}
           local res, msg = include("${{ inputs.lua-script }}")
           if(res == false) then
             error("Execution of script '${scriptFileName}' failed: " .. tostring(msg))
