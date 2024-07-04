@@ -55,6 +55,8 @@ runs:
     - name: Run Test Scripts
       shell: bash
       run: |
+        ./test_getline.exe
+
         cd "pragma"
         if [ "$RUNNER_OS" == "Linux" ]; then
           chmod +x ./pragma
