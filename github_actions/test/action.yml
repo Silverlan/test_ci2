@@ -2,7 +2,11 @@ name: Run Pragma
 description: 'Run Pragma'
 inputs:
   lua-code:
-    description: 'Lua Code'
+    description: 'Lua code to execute'
+    required: true
+    default: ''
+  lua-script:
+    description: 'Lua script file to execute'
     required: true
     default: ''
   state:
@@ -13,6 +17,10 @@ inputs:
     description: 'The version of Pragma to download (if it not already exists).'
     required: true
     default: 'nightly'
+  artifacts-name:
+    description: 'If specified, debug files (e.g. logs) will be uploaded as artifacts under this name.'
+    required: true
+    default: ''
 outputs:
   exit-code:
     description: 'The exit code raised by Pragma.'
@@ -92,6 +100,9 @@ runs:
         EOF
 
         echo "file.write(\"ci.txt\", \"unknown\")" >> ${scriptFileName}
+        if [ "${{ inputs.lua-script }}" != "" ]; then
+          echo "include(\"${{ inputs.lua-script }}\")" >> ${scriptFileName}
+        fi
         echo "${{ inputs.lua-code }}" >> ${scriptFileName}
         echo "file.write(\"ci.txt\", \"success\")" >> ${scriptFileName}
         cat ${scriptFileName}
@@ -161,16 +172,16 @@ runs:
           exit 2
         fi
 
-    - name: Upload Log
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: log
-        path: "pragma/log.txt"
+    - name: Prepare artifact file
+      shell: bash
+      run: |
+        mkdir -p artifacts
+        cp pragma/log.txt artifacts/log.txt
+        cp -r pragma/crashdumps artifacts/crashdumps
 
-    - name: Upload Crashdumps
+    - name: Upload artifact files
       uses: actions/upload-artifact@v4
-      if: always()
+      if: always() && ${{ inputs.artifacts-name != '' }}
       with:
-        name: crashdumps
-        path: "pragma/crashdumps"
+        name: ${{ inputs.artifacts-name }}
+        path: "artifacts"

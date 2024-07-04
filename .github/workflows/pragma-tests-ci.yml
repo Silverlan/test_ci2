@@ -14,16 +14,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Run Pragma Custom Action
+      - name: Test Model Import
         id: pragma
         uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
         with:
-          lua-code: |
-            local test = \"Hello\"
-            print(\"Test Message: \", test)
-            print(engine.load_library(\"mount_external/pr_mount_external\"))
-            --print(\"Import: \",asset.import(\"headcrabclassic\", asset.TYPE_MODEL))
-            game.load_model(\"headcrabclassic\")
+          lua-script: test_ci.lua
+          artifacts-name: "model-import"
 
       - name: Output Result
         shell: bash
