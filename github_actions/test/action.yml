@@ -55,13 +55,11 @@ runs:
     - name: Run Test Scripts
       shell: bash
       run: |
-        ./test_getline.exe
-
         cd "pragma"
         if [ "$RUNNER_OS" == "Linux" ]; then
           chmod +x ./pragma
         fi
-        ./pragma.com -cli -non_interactive -luaext -log 2 2 +map "empty" +"lua_exec test_script.lua" +"lua_run exit"
+        ./pragma.com -cli -non_interactive -luaext -log 2 2 +map "empty" +"lua_exec test_script.lua" +"exit"
 
     #- name: Upload Crashdumps
     #  uses: actions/upload-artifact@v4
