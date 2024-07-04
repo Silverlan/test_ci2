@@ -19,4 +19,4 @@ jobs:
         with:
           lua-code: |
             local test = "Hello"
-            print(test)
+            print('Test Message: ', test)
