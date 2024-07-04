@@ -85,7 +85,7 @@ runs:
         end)
         EOF
 
-        echo "file.write(\"ci.txt\", \"2\")" > ${scriptFileName}
+        echo "file.write(\"ci.txt\", \"2\")" >> ${scriptFileName}
         echo "${{ inputs.lua-code }}" >> ${scriptFileName}
         echo "file.write(\"ci.txt\", \"0\")" >> ${scriptFileName}
         cat ${scriptFileName}
