@@ -21,6 +21,7 @@ jobs:
           test-scripts: |
             "tests/assets/assets.lua"
             "tests/game/game.lua"
+            "tests/pfm/launch_pfm.lua"
           artifacts-name: "assets"
           screenshot: true
 

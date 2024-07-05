@@ -8,6 +8,4 @@ assert(ent:IsValid() == false)
 -- Print all entities
 console.print_table(ents.get_all())
 
-asdf()
-
 return true
