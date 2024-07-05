@@ -213,11 +213,17 @@ runs:
           cp -rf pragma/artifacts/* artifacts/
         fi
 
-    - name: Test
-      if: always() && ${{ inputs.artifacts-name != '' }}
+    - name: Test0
+      if: always()
       shell: bash
       run: |
-        echo "TEST ASDF"
+        echo "TESTASDF0"
+
+    - name: Test2
+      if: ${{ inputs.artifacts-name != '' }}
+      shell: bash
+      run: |
+        echo "TESTASDF1"
 
     - name: Upload artifact files
       uses: actions/upload-artifact@v4
