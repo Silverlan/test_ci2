@@ -20,6 +20,7 @@ jobs:
         with:
           test-scripts: "tests/assets/assets.lua"
           artifacts-name: "assets"
+          screenshot: true
 
       #- name: Launch PFM
       #  id: launch-pfm
