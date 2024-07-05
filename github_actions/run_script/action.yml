@@ -69,7 +69,7 @@ runs:
           if [[ $fileName == *.tar.gz ]]; then
             tar -xzf ${fileName} -C pragma
           else
-            unzip ${fileName} -d pragma
+            unzip -q ${fileName} -d pragma
           fi
         fi
 
