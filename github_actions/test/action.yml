@@ -38,6 +38,12 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Test2
+      if: ${{ inputs.artifacts-name != '' }}
+      shell: bash
+      run: |
+        echo "TESTASDF1"
+
     - name: Download Pragma
       shell: bash
       run: |
@@ -219,11 +225,11 @@ runs:
       run: |
         echo "TESTASDF0"
 
-    - name: Test2
-      if: ${{ inputs.artifacts-name != '' }}
+    - name: Test3
+      if: always() && ${{ inputs.artifacts-name != '' }}
       shell: bash
       run: |
-        echo "TESTASDF1"
+        echo "TESTASDF3"
 
     - name: Upload artifact files
       uses: actions/upload-artifact@v4
