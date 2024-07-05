@@ -34,7 +34,7 @@ runs:
         lua-code: |
           include(\"/tests/base.lua\")
           local scripts = {
-            ${{ inputs.test-scripts }}
+            \"${{ inputs.test-scripts }}\"
           }
           for _,script in ipairs(scripts) do
             include(script)
