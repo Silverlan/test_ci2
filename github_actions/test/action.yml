@@ -156,7 +156,7 @@ runs:
         elif [ "${{ inputs.state }}" == "server" ]; then
           executableName="pragma_server"
         fi
-        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"${luaCmdName} ci_script.lua" +"exit"
+        ./${executableName} -cli -non_interactive -luaext -log 1 1 -log_file "log.txt" +map "empty" +"exit"
 
         EXIT_CODE=$?
         echo "exit-code=$(echo $EXIT_CODE)" >> $GITHUB_OUTPUT
