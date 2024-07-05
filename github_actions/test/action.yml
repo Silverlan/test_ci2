@@ -111,14 +111,18 @@ runs:
         if [ "${{ inputs.artifacts-name }}" != "" ] && [ "${{ inputs.screenshot }}" = true ]; then
         cat <<EOF >> ${scriptFileName}
           -- Wait a few frames before taking the screenshot
+          print("XXXX1")
           game.wait_for_frames(5, function()
+          print("XXXX2")
             time.create_simple_timer(0.0, function()
+          print("XXXX3")
               local screenshotPath = util.screenshot()
               if(screenshotPath ~= nil) then
                 file.create_directory("artifacts")
                 file.copy(screenshotPath, "artifacts/screenshot.png")
               end
               engine.shutdown()
+          print("XXXX4")
             end)
           end)
         end)
