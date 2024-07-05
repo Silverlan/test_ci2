@@ -24,6 +24,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Convert test scripts to string
+      id: convert-scripts
+      run: |
+        test_scripts="${{ inputs.test-scripts }}"
+        test_scripts=$(echo $test_scripts | jq -R 'split("\n") | map(select(length > 0)) | join(", ")')
+        echo "test_scripts_string=$test_scripts" >> $GITHUB_ENV
+
     - name: Test Model Import
       id: pragma
       uses: Silverlan/test_ci2/github_actions/run_script@main
@@ -34,7 +41,7 @@ runs:
         lua-code: |
           include(\"/tests/base.lua\")
           local scripts = {
-            \"${{ inputs.test-scripts }}\"
+            ${{ env.test_scripts_string }}
           }
           for _,script in ipairs(scripts) do
             include(script)
