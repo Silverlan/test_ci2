@@ -38,12 +38,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Test2
-      if: ${{ inputs.artifacts-name != '' }}
-      shell: bash
-      run: |
-        echo "TESTASDF1"
-
     - name: Download Pragma
       shell: bash
       run: |
@@ -207,6 +201,7 @@ runs:
 
     - name: Prepare artifact file
       shell: bash
+      if: ${{ always() && inputs.artifacts-name != '' }}
       run: |
         mkdir -p artifacts
         if [ -f "pragma/log.txt" ]; then
@@ -218,18 +213,6 @@ runs:
         if [ -d "pragma/artifacts" ]; then
           cp -rf pragma/artifacts/* artifacts/
         fi
-
-    - name: Test0
-      if: always()
-      shell: bash
-      run: |
-        echo "TESTASDF0"
-
-    - name: Test3
-      if: ${{ always() && inputs.artifacts-name != '' }}
-      shell: bash
-      run: |
-        echo "TESTASDF3"
 
     - name: Upload artifact files
       uses: actions/upload-artifact@v4
