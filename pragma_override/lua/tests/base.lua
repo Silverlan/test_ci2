@@ -8,7 +8,10 @@ test.run = function(scriptName)
 	test.impl.currentTest = scriptName
 	test.impl.callbackHandler:CallCallbacks("OnTestStart", scriptName)
 	local retVals = { include(scriptName) }
+	print("retVals:", scriptName)
+	console.print_table(retVals)
 	if retVals[1] ~= nil then
+		print("COMPELTE")
 		test.complete(retVals[1], retVals[2])
 	end
 end
