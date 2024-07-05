@@ -110,18 +110,22 @@ runs:
 
         if [ "${{ inputs.artifacts-name }}" != "" ] && [ "${{ inputs.screenshot }}" = true ]; then
         cat <<EOF >> ${scriptFileName}
-          local screenshotPath = util.screenshot()
-          if(screenshotPath ~= nil) then
-            file.create_directory("artifacts")
-            file.copy(screenshotPath, "artifacts/screenshot.png")
-          end
+          -- Wait a few frames before taking the screenshot
+          game.wait_for_frames(5, function()
+            local screenshotPath = util.screenshot()
+            if(screenshotPath ~= nil) then
+              file.create_directory("artifacts")
+              file.copy(screenshotPath, "artifacts/screenshot.png")
+            end
+            engine.shutdown()
+          end)
         EOF
-        fi
-
+        else
         cat <<EOF >> ${scriptFileName}
           engine.shutdown()
         end)
         EOF
+        fi
 
         echo "file.write(\"ci.txt\", \"unknown\")" >> ${scriptFileName}
         if [ "${{ inputs.lua-script }}" != "" ]; then
