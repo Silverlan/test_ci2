@@ -110,7 +110,11 @@ runs:
 
         if [ "${{ inputs.artifacts-name }}" != "" && ${{ inputs.screenshot }} ]; then
         cat <<EOF >> ${scriptFileName}
-          util.screenshot()
+          local screenshotPath = util.screenshot()
+          if(screenshotPath ~= nil) then
+            file.create_directory("artifacts")
+            file.copy(screenshotPath, "artifacts/screenshot.png")
+          end
         EOF
         fi
 
@@ -204,6 +208,9 @@ runs:
         fi
         if [ -d "pragma/crashdumps" ]; then
           cp -r pragma/crashdumps artifacts/crashdumps
+        fi
+        if [ -d "pragma/artifacts" ]; then
+          cp -rf pragma/artifacts/* artifacts/
         fi
 
     - name: Upload artifact files

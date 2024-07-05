@@ -27,6 +27,7 @@ jobs:
         with:
           lua-script: tests/pfm/launch_pfm.lua
           artifacts-name: "launch-pfm"
+          screenshot: true
 
       - name: Output Result
         shell: bash
