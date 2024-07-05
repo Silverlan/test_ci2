@@ -1,5 +1,5 @@
-name: Run Pragma
-description: 'Run Pragma'
+name: Run Pragma Script
+description: 'Run a Pragma Lua-script.'
 inputs:
   lua-code:
     description: 'Lua code to execute'
@@ -73,13 +73,6 @@ runs:
           fi
         fi
 
-    #- name: Download asset files
-    #  shell: bash
-    #  run: |
-    #    cd pragma
-    #    curl -L "https://pragma-engine.com/share/addons.zip" -o "addons.zip"
-    #    unzip "addons.zip" -d .
-
     - name: Copy Override Files (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -90,7 +83,7 @@ runs:
           echo "Override directory does not exist. Skipping copy."
         }
 
-    - name: Write Lua Code to File
+    - name: Generate CI Lua-script
       shell: bash
       run: |
         mkdir -p pragma/lua
@@ -139,7 +132,7 @@ runs:
         echo "file.write(\"ci.txt\", \"success\")" >> ${scriptFileName}
         cat ${scriptFileName}
 
-    - name: Run Test Scripts
+    - name: Run script
       shell: bash
       id: run-script
       run: |
@@ -166,12 +159,12 @@ runs:
         EXIT_CODE=$?
         echo "exit-code=$(echo $EXIT_CODE)" >> $GITHUB_OUTPUT
 
-    - name: Delete Lua Code File
+    - name: Clean-up
       shell: bash
       run: |
         rm pragma/lua/ci_script.lua
 
-    - name: Check Result
+    - name: Check script execution result
       id: handle-result
       shell: bash
       run: |
@@ -204,7 +197,7 @@ runs:
           exit 2
         fi
 
-    - name: Prepare artifact file
+    - name: Prepare artifact files
       shell: bash
       if: ${{ always() && inputs.artifacts-name != '' }}
       run: |
