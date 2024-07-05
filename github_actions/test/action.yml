@@ -97,7 +97,6 @@ runs:
         EOF
 
         cat <<EOF >> ${scriptFileName}
-        include("tests/base.lua")
         local cbOnTestComplete = test.add_event_listener("OnTestComplete", function(success, errMsg)
         EOF
 
@@ -124,7 +123,7 @@ runs:
         echo "file.write(\"ci.txt\", \"unknown\")" >> ${scriptFileName}
         if [ "${{ inputs.lua-script }}" != "" ]; then
           cat <<EOF >> ${scriptFileName}
-        test.run("${{ inputs.lua-script }}")
+        include("${{ inputs.lua-script }}")
         EOF
 
         fi
