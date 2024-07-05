@@ -29,7 +29,7 @@ runs:
       shell: bash
       run: |
         test_scripts="${{ inputs.test-scripts }}"
-        test_scripts=$(echo $test_scripts | jq -R 'split(" ") | map(select(length > 0)) | join(", ")')
+        test_scripts=$(echo $test_scripts | jq -R 'split(" ") | map(select(length > 0)) | join("\", \"")')
         echo "test_scripts: $test_scripts"
         echo "test_scripts_string=$test_scripts" >> $GITHUB_ENV
 
