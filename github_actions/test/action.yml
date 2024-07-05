@@ -226,14 +226,14 @@ runs:
         echo "TESTASDF0"
 
     - name: Test3
-      if: always() && ${{ inputs.artifacts-name != '' }}
+      if: ${{ always() && inputs.artifacts-name != '' }}
       shell: bash
       run: |
         echo "TESTASDF3"
 
     - name: Upload artifact files
       uses: actions/upload-artifact@v4
-      if: always() && ${{ inputs.artifacts-name != '' }}
+      if: ${{ always() && inputs.artifacts-name != '' }}
       with:
         name: ${{ inputs.artifacts-name }}
         path: "artifacts"
