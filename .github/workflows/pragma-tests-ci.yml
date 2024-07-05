@@ -16,11 +16,9 @@ jobs:
 
       - name: Test Model Import
         id: pragma
-        uses: Silverlan/test_ci2/github_actions/test@main  # This points to the root directory of your repository where action.yml is located
+        uses: Silverlan/test_ci2/github_actions/run_tests@main  # This points to the root directory of your repository where action.yml is located
         with:
-          lua-script: tests/assets/assets.lua
-          lua-code: |
-            tests.run()
+          test-scripts: tests/assets/assets.lua
           artifacts-name: "assets"
 
       #- name: Launch PFM
@@ -31,10 +29,10 @@ jobs:
       #    artifacts-name: "launch-pfm"
       #    screenshot: true
 
-      - name: Output Result
-        shell: bash
-        if: always()
-        run: |
-          echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
-          echo "Error: ${{ steps.pragma.outputs.error }}"
-          echo "Lua-error: ${{ steps.pragma.outputs.lua-error }}"
+      #- name: Output Result
+      #  shell: bash
+      #  if: always()
+      #  run: |
+      #    echo "Exit-code: ${{ steps.pragma.outputs.exit-code }}"
+      #    echo "Error: ${{ steps.pragma.outputs.error }}"
+      #    echo "Lua-error: ${{ steps.pragma.outputs.lua-error }}"
