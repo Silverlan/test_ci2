@@ -119,6 +119,7 @@ runs:
             end
             engine.shutdown()
           end)
+        end)
         EOF
         else
         cat <<EOF >> ${scriptFileName}
