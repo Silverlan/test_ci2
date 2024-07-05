@@ -30,8 +30,8 @@ runs:
       run: |
         test_scripts="${{ inputs.test-scripts }}"
         test_scripts=$(echo $test_scripts | jq -R 'split(" ") | map(select(length > 0)) | join("\", \"")')
-        test_scripts="\"$test_scripts\""
-        echo "test_scripts_string=$test_scripts" >> $GITHUB_ENV
+        test_scripts_string="\"$test_scripts\""
+        echo "test_scripts_string=$test_scripts_string" >> $GITHUB_ENV
 
     - name: Test Model Import
       id: pragma
