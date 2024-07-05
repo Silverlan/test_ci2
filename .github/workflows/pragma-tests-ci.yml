@@ -18,7 +18,7 @@ jobs:
         id: pragma
         uses: Silverlan/test_ci2/github_actions/run_tests@main  # This points to the root directory of your repository where action.yml is located
         with:
-          test-scripts: tests/assets/assets.lua
+          test-scripts: "tests/assets/assets.lua"
           artifacts-name: "assets"
 
       #- name: Launch PFM
