@@ -97,7 +97,7 @@ runs:
         EOF
 
         cat <<EOF >> ${scriptFileName}
-        local cbOnTestComplete = test.add_event_listener("OnTestComplete", function(success, errMsg)
+        local cbOnTestComplete = tests.add_event_listener("OnTestComplete", function(success, errMsg)
         EOF
 
         if [ "${{ inputs.artifacts-name }}" != "" ] && [ "${{ inputs.screenshot }}" = true ]; then
